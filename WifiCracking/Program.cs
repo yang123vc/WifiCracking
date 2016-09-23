@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace WifiCracking
@@ -13,9 +11,20 @@ namespace WifiCracking
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            bool createNew;
+            using (new System.Threading.Mutex(true, Application.ProductName, out createNew))
+            {
+                if (createNew)
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new Form1());
+                }
+                else
+                {
+                    MessageBox.Show("该程序己启动");
+                }
+            }
         }
     }
 }
